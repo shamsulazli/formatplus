@@ -1,0 +1,488 @@
+//New Tamplate Format Plus
+function newTemplateFormatPlus(){
+var sheet = SpreadsheetApp.openById('1eFaWxQsi2YXpwUTCcMuRUAdAdHCxV8jtnBcttkrEMZ4')
+var destFolder = DriveApp.getRootFolder();
+var newsheet = DriveApp.getFileById(sheet.getId()).makeCopy("Untitled SpreadsheetPlus+", destFolder);
+var newID =  newsheet.getId()
+var html = `<script>window.open('https://docs.google.com/spreadsheets/d/`+newID+`');google.script.host.close();</script>`;
+var userInterface = HtmlService.createHtmlOutput(html).setWidth(1).setHeight(1);
+SpreadsheetApp.getUi().showModalDialog(userInterface,'New Template FormatPlus+');
+}
+
+//Format Phone (01x-x)
+function formatPhone() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = sheet.getActiveRange();
+var selectedValues = selectedRange.getValues();
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+
+for (i = 0; i < selectedRows; i++) {
+for (j = 0; j < selectedColumns; j++) {
+var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+var formattedValue = "";
+if (val.substring(0, 2) === "60") {
+var formattedValue = "0" + val.substring(2, 4) + "-" + val.substring(4);
+} else if (val.substring(0, 1) === "1") {
+var formattedValue = "01" + val.substring(1, 2) + "-" + val.substring(2);
+} else if (val !== "") {
+var formattedValue = "0"+val.substring(1, 3) + "-" + val.substring(3);
+} else {
+formattedValue = "";
+}
+var cell = sheet.getRange(roww + i, columm+j);
+cell.setValue(formattedValue).setHorizontalAlignment("left");
+}}}
+
+
+//Format Phone (0XXX)
+function formatPhone3() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = sheet.getActiveRange();
+var selectedValues = selectedRange.getValues();
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+
+for (i = 0; i < selectedRows; i++) {
+for (j = 0; j < selectedColumns; j++) {
+//var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+
+if (val.startsWith("60")) {
+val = "" + val.substr(1);
+} else if (val.startsWith("1")) {
+val = "0" + val;
+} else if (val!=="") {
+val;
+}
+else
+var formattedValue = val.toString();
+var cell = sheet.getRange(roww + i, columm+j);
+cell.setNumberFormat('@');
+cell.setHorizontalAlignment('left');
+cell.setValue(formattedValue);
+}}}
+
+//Format Phone (60xx)
+function formatPhone2() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = sheet.getActiveRange();
+var selectedValues = selectedRange.getValues();
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+
+for (i = 0; i < selectedRows; i++) {
+for (j = 0; j < selectedColumns; j++) {
+var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+var formattedValue = "";
+if (val.substring(0, 2) === "60") {
+formattedValue = val;
+} else if (val.substring(0, 1) === "0") {
+formattedValue = "60" + val.substring(1);
+} else if (val !== "") {
+formattedValue = "60" + val;
+} else {
+formattedValue = "";
+}
+var cell = sheet.getRange(roww + i, columm+j);
+cell.setNumberFormat("@").setHorizontalAlignment("left");
+cell.setValue(formattedValue);
+}}}
+
+//Format KP (XXX)
+function formatKP() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = sheet.getActiveRange();
+var selectedValues = selectedRange.getValues();
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+
+for (i = 0; i < selectedRows; i++) {
+for (j = 0; j < selectedColumns; j++) {
+var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+if (val === "") {
+formattedValue = "";
+} else if (val.length === 12) {
+formattedValue = val;
+} else if (val.length < 12) {
+var formattedValue = '0'.repeat(12 - val.length) + val;
+}
+var cell = sheet.getRange(roww + i, columm+j);
+cell.setNumberFormat("@").setHorizontalAlignment("center");
+cell.setValue(formattedValue);
+}}}
+
+//Format KP (X-X-X)
+function formatKP2() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = sheet.getActiveRange();
+var selectedValues = selectedRange.getValues();
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+
+for (i = 0; i < selectedRows; i++) {
+for (j = 0; j < selectedColumns; j++) {
+var val = selectedValues[i][j].toString().replace(/[\s\-\+\*]/g, "");
+if (val === "") {
+formattedValue = "";
+} else if (val.length < 12) {
+var val2 = '0'.repeat(12 - val.length) + val;
+formattedValue = val2.slice(0, 6) + '-' + val2.slice(6, 8) + '-' + val2.slice(8);;
+} else if (val.length === 12) {
+formattedValue = val.slice(0, 6) + '-' + val.slice(6, 8) + '-' + val.slice(8);;
+}
+var cell = sheet.getRange(roww + i, columm+j);
+cell.setNumberFormat("@").setHorizontalAlignment("center");
+cell.setValue(formattedValue);
+}}}
+
+//Format Tanpa RM
+function formatWithoutRM(){
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var values = rng.getValues();
+
+var newValues = values.map(function (row) {
+return row.map(function (value) {
+return value.toString().replace(/Rm|RM|rm/g, '');
+});
+});
+rng.setValues(newValues).setNumberFormat('#,##0.00');
+}
+
+//Format Dengan RM
+function formatWithRM() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var values = rng.getValues();
+
+var newValues = values.map(function (row) {
+return row.map(function (value) {
+var cleanedValue = value.toString().replace(/Rm|RM|rm/g, '');
+return cleanedValue;
+});
+});
+rng.setValues(newValues).setNumberFormat('"RM"#,##0.00');
+}
+
+//Format SerialNumbersAll
+function autoBilangan() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveCell();
+var columm = range.getColumn();
+var roww = range.getRow()
+var lastColum = sheet.getActiveRange().getNumColumns()
+var lastRow = sheet.getRange(roww,columm).getDataRegion().getLastRow();
+var cell = sheet.getRange(roww, columm, lastRow-roww+1, lastColum);
+cell.activate()
+
+var selectedColumns = cell.getWidth();
+var selectedRows = cell.getHeight();
+var resultsArray = [];
+for (var i = 0; i < selectedRows; i++) {
+var rowData = [];
+for (var j = 0; j < selectedColumns; j++) {
+rowData.push(i * selectedColumns + j + 1);
+}
+resultsArray.push(rowData);
+}
+cell.setValues(resultsArray);
+sheet.getRange(roww,columm).activate()
+}
+
+//Format SerialNumbersSelected
+function autoBilanganSelected() {
+var selectedRange = SpreadsheetApp.getActive().getActiveSheet().getActiveRange()
+var selectedColumns = selectedRange.getWidth();
+var selectedRows = selectedRange.getHeight();
+var resultsArray = [];
+for (var i = 0; i < selectedRows; i++) {
+var rowData = [];
+for (var j = 0; j < selectedColumns; j++) {
+rowData.push(i * selectedColumns + j + 1);
+}
+resultsArray.push(rowData);
+}
+selectedRange.setValues(resultsArray);
+}
+
+//Format SerialNumbersA1
+function sequenceA1() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var cell = sheet.getActiveCell().getA1Notation();
+var formulaCell = sheet.getRange(cell);
+formulaCell.setFormula(`={"BIL";SEQUENCE(COUNTA(B2:B))}`);
+}
+
+//Uppercase
+function changeCaseupper() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val= rng.getValues();
+var valueCap=val.map(val => val.map(v=>v.toString().toUpperCase()));
+rng.setValues(valueCap);
+}
+
+//Lowercase
+function changeCaselower() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val= rng.getValues();
+var valueCap=val.map(val => val.map(v=>v.toString().toLowerCase()));
+rng.setValues(valueCap);
+}
+
+//Propercase
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val= rng.getValues();
+var valueCap= val.map(val => val.map(v=>v.toString().toLowerCase().replace(/\b[a-z]/ig, function(match) {return match.toUpperCase()})));
+rng.setValues(valueCap);
+}
+
+//Sentencecase
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val= rng.getValues();
+var valueCap= val.map(val => val.map(v=>v.toString().toLowerCase().replace(/^[a-z]/i, function(match) {return match.toUpperCase()})));
+rng.setValues(valueCap);
+
+// Ubah huruf pertama dari kata-kata yang diawali dengan titik menjadi huruf besar
+var valueCap2 = valueCap.map(function(row) {
+return row.map(function(cell) {
+if (typeof cell === 'string') {
+return cell.replace(/(\.\s|^)(\w)/g, function(match) {
+return match.toUpperCase();
+});
+}
+return cell;
+});
+});
+rng.setValues(valueCap2);
+}
+
+//Format Bin/Binti
+function formatBin(){
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val= rng.getValues();
+var newValues = val.map(function (row) {
+return row.map(function (val) {
+return val.toString().replace(/Binti|Bin|Bt|Bt.|B.|A\/l|A\/p/gi, function(match) {
+return match.toLowerCase();
+});
+});
+});
+
+rng.setValues(newValues);
+}
+
+//Kemaskini Perenggan
+function formatparagraph() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var valuesFormat = rng.getValues();
+
+for (var format = 0; format < valuesFormat.length; format++) {
+var cellValueFormat = valuesFormat[format][0];
+if (typeof cellValueFormat === 'string') {
+var newValueFormat = cellValueFormat.replace(/\n/g, ', ').replace(/\s+/g, ' ').replace(/,,/g, ',');
+valuesFormat[format][0] = newValueFormat;
+}}
+rng.setValues(valuesFormat);
+}
+
+//Format Alamat 
+function concatenateCells() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var valuesFormat = rng.getValues();
+
+for (var format = 0; format < valuesFormat.length; format++) {
+var cellValueFormat = valuesFormat[format][0];
+if (typeof cellValueFormat === 'string') {
+var newValueFormat = cellValueFormat.replace(/,\s/g,',').replace(/,/g, '\,\n');
+valuesFormat[format][0] = newValueFormat;
+}
+}
+rng.setValues(valuesFormat);
+}
+
+// FormulaToText
+function formulaToText() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var rng = sheet.getActiveRange()
+var val = rng.getValues();
+
+var valueCap = val.map(row => row.map(cell => formatCell(cell)));
+rng.setValues(valueCap);
+}
+
+function formatCell(cell) {
+// Check if the cell is a date
+if (cell instanceof Date) {
+// Format date as dd/mm/yyyy
+return Utilities.formatDate(cell,"GMT+8", "dd/MM/yyyy");
+} else {
+return cell.toLocaleString();
+}
+}
+
+//Select All Table
+function selectTable() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveCell();
+var column = range.getColumn();
+var roww = range.getRow();
+var lastRow = sheet.getMaxRows();
+var lastColum = sheet.getMaxColumns();
+var cell = sheet.getRange(roww, column, lastRow - roww + 1, lastColum);
+cell.activate();
+}
+
+//Select All Row
+function selectAllRow() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveCell();
+var column = range.getColumn();
+var roww = range.getRow();
+var lastRow = sheet.getMaxRows();
+var lastColum = sheet.getActiveRange().getNumColumns()
+var cell = sheet.getRange(roww, column, lastRow - roww + 1, lastColum);
+cell.activate();
+}
+
+//Select All Row Active
+function selectActiveRow() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveCell();
+var columm = range.getColumn();
+var roww = range.getRow()
+var lastColum = sheet.getActiveRange().getNumColumns()
+var lastRow = sheet.getRange(roww,columm).getDataRegion().getLastRow();
+var cell = sheet.getRange(roww, columm, lastRow-roww+1, lastColum);
+cell.activate()
+}
+
+//Format Bolder
+function formatBolder() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveCell();
+var columm = range.getColumn();
+var roww = range.getRow()
+var columNumber = sheet.getActiveRange().getNumColumns()
+var rowNumber = sheet.getActiveRange().getNumRows()
+var rng = sheet.getRange(roww,columm,rowNumber,columNumber);
+rng.setBorder(true, true, true, true, true, true) ;
+}
+
+//Delete unnecessary row
+function deleteKosongGaneral(){
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sh = ss.getActiveSheet();
+var lastRow = sh.getRange(1,1).getDataRegion().getLastRow();
+sh.insertRowAfter(lastRow)
+var maxRows = sh.getMaxRows();
+sh.deleteRows(lastRow+1, maxRows-lastRow);
+}
+
+//Crop Sheet
+function cropSheet(){
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sh = ss.getActiveSheet();
+var lastRow = sh.getRange(1,1).getDataRegion().getLastRow();
+var lastColum = sh.getRange(1,1).getDataRegion().getLastColumn();
+sh.insertRowAfter(lastRow)
+var maxRows = sh.getMaxRows();
+sh.deleteRows(lastRow+1, maxRows-lastRow);
+var maxColums = sh.getMaxColumns();
+sh.deleteColumns(lastColum+1, maxColums-lastColum);
+}
+
+//Delete unnecessary Row and Column
+function trimActiveRange() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var range = sheet.getActiveRange();
+var columm = range.getColumn();
+var roww = range.getRow()
+var numRoww = range.getNumRows()
+var numColl = range.getNumColumns()
+var rng = sheet.getRange(roww, columm, numRoww, numColl);
+rng.trimWhitespace();
+}
+
+//Delete Blank Row
+//Delete Blank Row
+function deleteEmptyRows() {
+var sh = SpreadsheetApp.getActiveSheet();
+var data = sh.getDataRange().getValues();
+var lastRow = sh.getLastRow();
+for (var i = lastRow; i > 0; i--) {
+var row = data[i - 1];
+var isEmpty = true;
+for (var j = 0; j < row.length; j++) {
+if (row[j] != "") {
+isEmpty = false;
+break;
+}
+}
+if (isEmpty) {
+sh.deleteRow(i);
+}
+}
+}
+
+
+//Go To Last Row
+function celllastRow() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var lastRow = sheet.getLastRow();
+sheet.getRange(lastRow, 1).activate();
+}
+
+//Go To Last  Active Row
+function celllastactiveRow() {
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getActiveSheet();
+var data = sheet.getDataRange().getValues();
+for (var i = data.length - 1; i >= 0; i--) {
+var row = data[i];
+if (!row.every(function(cell) { return cell === ""; })) {
+sheet.getRange(i + 1, 1).activate();
+return;
+}
+}
+}
