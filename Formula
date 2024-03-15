@@ -1,0 +1,480 @@
+//FORMULA DATE FULL (BM)
+function tarikhbm(t) {
+const ta = new Date(t);
+const day = Utilities.formatDate(ta,"GMT+8","dd");
+const year = ta.getFullYear();
+const month = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"][ta.getMonth()];
+return day + " " + month + " " + year;
+}
+
+//HARI DARI TARIKH (BM)
+function hari(d) {
+const ta = new Date(d);
+const day = ta.getDate();
+
+const hari = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'][ta.getDay()];
+return hari;
+}
+
+//FORMULA DATE FULL (ENG)
+function datebi(val) {
+const date = new Date(val);
+const day = date.getDate();
+const year = date.getFullYear();
+const month = date.toLocaleString('en-US', { month: 'long' });;
+return day + " " + month + " " + year;
+}
+
+//HRUF ANGKA BM
+function hurufAngka(number) {
+if (number === 0) {
+return 'Kosong';
+}
+const units =['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Lapan', 'Sembilan','Sepuluh'];
+const teens = ['', 'Sebelas', 'Dua Belas', 'Tiga Belas', 'Empat Belas', 'Lima Belas', 'Enam Belas', 'Tujuh Belas', 'Lapan Belas', 'Sembilan Belas'];
+const tens = ['', 'Sepuluh', 'Dua Puluh', 'Tiga Puluh', 'Empat Puluh', 'Lima Puluh', 'Enam Puluh', 'Tujuh Puluh', 'Lapan Puluh', 'Sembilan Puluh'];
+function convertLessThanOneThousand(num) {
+if (num === 0) {
+return '';
+} else if (num <= 10) {
+return units[num];
+} else if (num < 20) {
+return teens[num - 10];
+} else if (num < 100) {
+return tens[Math.floor(num / 10)] + ' ' + convertLessThanOneThousand(num % 10);
+} else {
+return units[Math.floor(num / 100)] + ' Ratus ' + convertLessThanOneThousand(num % 100);
+}
+}
+function convertChunk(num, chunkIndex) {
+if (num === 0) {
+return '';
+} else {
+return convertLessThanOneThousand(num) + (chunkIndex > 0 ? ' ' + getChunkLabel(chunkIndex) + ' ' : '');
+}
+}
+
+function getChunkLabel(chunkIndex) {
+const chunkLabels = ['', 'Ribu', 'Juta', 'Billion', 'Trillion'];
+return chunkLabels[chunkIndex];
+}
+const chunks = [];
+while (number > 0) {
+chunks.push(number % 1000);
+number = Math.floor(number / 1000);
+}
+const words = chunks.map((chunk, index) => convertChunk(chunk, index)).reverse();
+return words.join(' ').trim();
+}
+
+//EJA ANGKA BM
+function ejaAngka(nilai) {
+if (typeof nilai !== 'number') {
+throw new Error('Input must be a number');
+}
+
+var nomborPart = Math.floor(nilai);
+var perpuluhanPart = Math.round((nilai % 1) * 100); // Extract cents and round to avoid floating-point precision issues
+
+var M = hurufAngka(nomborPart);
+
+if (perpuluhanPart > 0) {
+M += ' perpuluhan ' + (hurufAngka(perpuluhanPart).replace(' Puluh', ""));
+}
+
+var input=  M.toString().replace(/\s+/g, ' ').trim();
+
+return input
+}
+
+//EJA RINGGIT  BM
+function ringgit(nilai) {
+if (typeof nilai !== 'number') {
+throw new Error('Input must be a number');
+}
+
+var ringgitPart = Math.floor(nilai);
+var senPart = Math.round((nilai % 1) * 100); // Extract cents and round to avoid floating-point precision issues
+
+var M = 'Ringgit Malaysia ' + hurufAngka(ringgitPart);
+
+if (senPart > 0) {
+(M += ' dan ' + hurufAngka(senPart) + ' Sen').replace(/\s+/g, ' ').trim();
+
+}
+var input = (M + ' Sahaja').toString().replace(/\s+/g, ' ').trim();
+return input
+}
+
+//EJA NOMBOR BI
+function spellNum(nilai){
+if (typeof nilai !== 'number') {
+throw new Error('Input must be a number');
+}
+
+var nummPart = Math.floor(nilai);
+var pointPart = Math.round((nilai % 1) * 100); // Extract cents and round to avoid floating-point precision issues
+
+var M = wordNumber(nummPart);
+
+if (pointPart > 0) {
+M += ' point ' + wordNumber(pointPart);
+}
+
+var input= M.toString().replace(/\s+/g, ' ').trim();
+
+return input
+}
+
+//EJA NOMBOR BI
+function wordNumber(number) {
+if (number === 0) {
+return 'Zero';
+}
+const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine','Ten'];
+const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+function convertLessThanOneThousand(num) {
+if (num === 0) {
+return '';
+} else if (num <= 10) {
+return units[num];
+} else if (num < 20) {
+return teens[num - 10];
+} else if (num < 100) {
+return tens[Math.floor(num / 10)] + ' ' + convertLessThanOneThousand(num % 10);
+} else {
+return units[Math.floor(num / 100)] + ' Hundred ' + convertLessThanOneThousand(num % 100);
+}
+}
+function convertChunk(num, chunkIndex) {
+if (num === 0) {
+return '';
+} else {
+return convertLessThanOneThousand(num) + (chunkIndex > 0 ? ' ' + getChunkLabel(chunkIndex) + ' ' : '');
+}
+}
+function getChunkLabel(chunkIndex) {
+const chunkLabels = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
+return chunkLabels[chunkIndex];
+}
+const chunks = [];
+while (number > 0) {
+chunks.push(number % 1000);
+number = Math.floor(number / 1000);
+}
+const words = chunks.map((chunk, index) => convertChunk(chunk, index)).reverse();
+return words.join(' ').trim();
+}
+
+//EJA RINGGIT BI
+function ringgitbi(nilai){
+if (typeof nilai !== 'number') {
+throw new Error('Input must be a number');
+}
+
+var ringgitPart = Math.floor(nilai);
+var senPart = Math.round((nilai % 1) * 100); // Extract cents and round to avoid floating-point precision issues
+
+var M = 'Ringgit Malaysia ' + spellNum(ringgitPart);
+
+if (senPart > 0) {
+(M += ' and ' + wordNumber(senPart) + ' Sen').toString().replace(/\s+/g, ' ').trim();
+
+}
+
+var input = (M + ' Only').toString().replace(/\s+/g, ' ').trim();
+
+return input
+}
+
+//SENARAI NAMA SHEET
+function sheetName() {
+var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets()
+var out = new Array( sheets.length+1 ) ;
+out[0] = [ "NAME" , "#GID" ];
+for (var i = 1 ; i < sheets.length+1 ; i++ ) out[i] =
+[sheets[i-1].getName() , sheets[i-1].getSheetId() ];
+return out
+}
+
+//SENARAI NAMA SHEET DENGAN LINK
+//SENARAI NAMA SHEET DENGAN LINK
+function linkSheet(){
+const ss = SpreadsheetApp.getActiveSpreadsheet();
+const formulaCell = ss.getActiveSheet().getActiveRange();
+const formula = `=FILTER(ARRAYFORMULA(HYPERLINK("#gid="& QUERY(INDEX(sheetname(),,2), "offset 0"),QUERY(INDEX(sheetname(),,1), "offset 0"))),
+ARRAYFORMULA(HYPERLINK("#gid="& QUERY(INDEX(sheetname(),,2), "offset 0"),QUERY(INDEX(sheetname(),,1), "offset 0"))<>"NAME"))`;
+formulaCell.setFormula(formula);
+}
+
+//JANTINA DARI KP
+function jantina(icNumber) {
+const lastDigit = icNumber.substr(-1);
+if (!/^\d$/.test(lastDigit)) {
+return 'Invalid input';
+}
+
+const lastDigitNumber = Number(lastDigit);
+if (lastDigitNumber % 2 === 1) {
+return 'LELAKI';
+} else {
+return 'PEREMPUAN';
+}}
+
+//TARIKH LAHIR DARI KP
+function tarikhLahir(icNumber) {
+const datePart = icNumber.substr(0, 6);
+if (!/^\d{6}$/.test(datePart)) {
+return 'Invalid input';
+}
+
+const yearPrefix = parseInt(datePart.substr(0, 2), 10) < 30 ? 2000 : 1900;
+const year = parseInt(datePart.substr(0, 2), 10) + yearPrefix;
+const month = parseInt(datePart.substr(2, 2), 10) - 1; // Months are zero-based
+const day = parseInt(datePart.substr(4, 2), 10);
+
+const extractedDate = new Date(year, month, day);
+
+if (isNaN(extractedDate.getTime())) {
+return 'Invalid date';
+}
+
+return extractedDate;
+}
+
+//UMUR DARI KP
+function umurkp(val) {
+const datePart = val.substr(0, 6);
+if (!/^\d{6}$/.test(datePart)) {
+return 'Invalid input';
+}
+
+const yearPrefix = parseInt(datePart.substr(0, 2), 10) < 35 ? 2000 : 1900;
+const year = parseInt(datePart.substr(0, 2), 10) + yearPrefix;
+const month = parseInt(datePart.substr(2, 2), 10) - 1; // Months are zero-based
+const day = parseInt(datePart.substr(4, 2), 10);
+
+const extractedDate = new Date(year, month, day);
+
+var startDate = new Date(extractedDate);
+var currentDate = new Date();
+var yearDifference = currentDate.getFullYear() - startDate.getFullYear();
+if (
+currentDate.getMonth() < startDate.getMonth() ||
+(currentDate.getMonth() === startDate.getMonth() &&
+currentDate.getDate() < startDate.getDate())
+) {
+yearDifference--;
+}
+return yearDifference;
+}
+
+//UMUR DARI TARIKH LAHIR
+function age(val) {
+var startDate = new Date(val);
+var currentDate = new Date();
+var yearDifference = currentDate.getFullYear() - startDate.getFullYear();
+if (
+currentDate.getMonth() < startDate.getMonth() ||
+(currentDate.getMonth() === startDate.getMonth() &&
+currentDate.getDate() < startDate.getDate())
+) {
+yearDifference--;
+}
+return yearDifference;
+}
+
+//NEGERI DARI KP
+function negerikp(icNumber) {
+// Remove non-numeric characters from the IC number
+const numericIC = icNumber.replace(/\D/g, '');
+// Check if the IC number has a valid length
+if (numericIC.length !== 12) {
+throw new Error('Invalid IC number. Please provide a valid 12-digit IC number.');
+}
+// Extract the state code from the IC number
+const stateCode = numericIC.substring(6, 8);
+// Define the state codes
+const stateCodes = {
+01': 'JOHOR','21': 'JOHOR','22': 'JOHOR','23': 'JOHOR','24': 'JOHOR',
+02': 'KEDAH','25': 'KEDAH','26': 'KEDAH','27': 'KEDAH',
+03': 'KELANTAN','28': 'KELANTAN','29': 'KELANTAN',
+04': 'MELAKA','30': 'MELAKA',
+05': 'NEGERI SEMBILAN','31': 'NEGERI SEMBILAN','59': 'NEGERI SEMBILAN',
+06': 'PAHANG','32': 'PAHANG','33': 'PAHANG',
+07': 'PULAU PINANG','34': 'PULAU PINANG','35': 'PULAU PINANG',
+08': 'PERAK','36': 'PERAK','37': 'PERAK','38': 'PERAK','39': 'PERAK',
+09': 'PERLIS','40': 'PERLIS',
+10': 'SELANGOR','41': 'SELANGOR','42': 'SELANGOR','43': 'SELANGOR','44': 'SELANGOR',
+11': 'TERENGGANU','45': 'TERENGGANU','46': 'TERENGGANU',
+12': 'SABAH','47': 'SABAH','48': 'SABAH','49': 'SABAH',
+13': 'SARAWAK','50': 'SARAWAK','51': 'SARAWAK','52': 'SARAWAK','53': 'SARAWAK',
+14': 'KUALA LUMPUR','54': 'KUALA LUMPUR','55': 'KUALA LUMPUR','56': 'KUALA LUMPUR','57': 'KUALA LUMPUR',
+15': 'LABUAN','58': 'LABUAN',
+16': 'PUTRAJAYA',
+60': 'BRUNAI',
+61': 'INDONESIA',
+66': 'SINGAPURA',
+67': 'THAILAND',
+75': 'INDIA',
+82': 'UNKNOWN',
+85': 'AFRIKA',
+87': 'BRITAIN'
+};
+// Return the state name based on the state code
+return stateCodes[stateCode] || 'Unknown';
+}
+
+//GRED DARI MARKAH
+function grade(mark) {
+// Try to convert to a number
+mark = parseFloat(mark);
+// Check if it's a valid number
+if (isNaN(mark)) {
+throw new Error('Invalid input. Please provide a valid numerical mark.');
+}
+if (mark >= 0 && mark <= 29.99) {
+return 'E';
+} else if (mark >= 30 && mark <= 34.99) {
+return 'D-';
+} else if (mark >= 35 && mark <= 39.99) {
+return 'D';
+} else if (mark >= 40 && mark <= 44.99) {
+return 'D+';
+} else if (mark >= 45 && mark <= 49.99) {
+return 'C-';
+} else if (mark >= 50 && mark <= 54.99) {
+return 'C';
+} else if (mark >= 55 && mark <= 59.99) {
+return 'C+';
+} else if (mark >= 60 && mark <= 64.99) {
+return 'B-';
+} else if (mark >= 65 && mark <= 69.99) {
+return 'B';
+} else if (mark >= 70 && mark <= 74.99) {
+return 'B+';
+} else if (mark >= 75 && mark <= 79.99) {
+return 'A-';
+} else if (mark >= 80 && mark <= 89.99) {
+return 'A';
+} else if (mark >= 90 && mark <= 100) {
+return 'A+';
+} else {
+throw new Error('Mark out of range. Please provide a mark between 0 and 100.');
+}
+}
+
+//POINTER DARI MARKAH
+function pointer(mark) {
+if (mark >= 0 && mark <= 29) {
+return 0;
+} else if (mark >= 30 && mark <= 34.99) {
+return 0.67;
+} else if (mark >= 35 && mark <= 39.99) {
+return 1.00;
+} else if (mark >= 40 && mark <= 44.99) {
+return 1.33;
+} else if (mark >= 45 && mark <= 49.99) {
+return 1.67;
+} else if (mark >= 50 && mark <= 54.99) {
+return 2.00;
+} else if (mark >= 55 && mark <= 59.99) {
+return 2.33;
+} else if (mark >= 60 && mark <= 64.99) {
+return 2.67;
+} else if (mark >= 65 && mark <= 69.99) {
+return 3.00;
+} else if (mark >= 70 && mark <= 74.99) {
+return 3.33;
+} else if (mark >= 75 && mark <= 79.99) {
+return 3.67;
+} else if (mark >= 80 && mark <= 100) {
+return 4.00;
+} else {
+// Handle invalid marks
+return 'Invalid mark';
+}
+}
+
+//JANA WHATSAPP LINK
+function whatsapp(phone) {
+// Ensure the phone number is a string
+if (typeof phone !== 'string') {
+phone = phone.toString().replace(/[\s\-\+\*]/g, "");
+}
+
+// Check if the phone number starts with "60" (country code for Malaysia)
+if (phone.substring(0, 2) === "60") {
+return "https://wa.me/" + phone; // Already formatted for WhatsApp
+} else if (phone.substring(0, 1) === "0") {
+// If the phone number starts with "0", replace it with "60"
+var newphone = "60" + phone.substring(1);
+return "https://wa.me/" + newphone; // Return the WhatsApp URL
+} else if (phone !== "") {
+// If the phone number is not empty, prepend "60" to it
+var newphone = "60" + phone;
+return "https://wa.me/" + newphone; // Return the WhatsApp URL
+} else {
+// If the phone number is empty, return a WhatsApp URL with an empty phone number
+return "https://wa.me/";
+}
+}
+
+//JANA IMAGE QRCODE
+function qrcode(link) {
+var qrlink = 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' + encodeURIComponent(link);
+return qrlink;
+}
+
+//KIRA TEMPOH 2 TARIKH
+/**
+* Function calculate the duration of two dates
+*
+* @param {endDate} endDate
+* @param {startDate} startDate
+* @return The period 2 date
+* @customfunction
+*/
+function tempoh(startDate, endDate) {
+return Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+
+//KIRA TEMPOH BERKHIDMAT
+/**
+* Calculate the period of service
+* @param {endDate} endDate
+* @param {startDate} dateService
+* @return The period 2 date
+* @customfunction
+*/
+function service(dateService) {
+var currentDate = new Date();
+var years = Math.floor((currentDate - dateService) / (1000 * 60 * 60 * 24 * 365));
+var months = Math.floor(((currentDate - dateService) % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44)); // Approximate number of days in a month
+return years + " Tahun " + months + " Bulan";
+}
+
+//JANA QR WHATSAPP
+function qrwasap(phone) {
+// Ensure the phone number is a string
+if (typeof phone !== 'string') {
+phone = phone.toString().replace(/[\s\-\+\*]/g, "");
+}
+// Check if the phone number starts with "60" (country code for Malaysia)
+if (phone.substring(0, 2) === "60") {
+return 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://wa.me/' + phone;
+} else if (phone.substring(0, 1) === "0") {
+// If the phone number starts with "0", replace it with "60"
+var newphone = "60" + phone.substring(1);
+return 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://wa.me/' + newphone;
+} else if (phone !== "") {
+// If the phone number is not empty, prepend "60" to it
+var newphone = "60" + phone;
+return 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://wa.me/' + newphone;
+} else {
+// If the phone number is empty, return an empty string
+return "";
+}
+}
