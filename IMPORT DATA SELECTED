@@ -1,0 +1,41 @@
+//IMPORT DATA SELECTED
+function importFilteredData() {
+// Source spreadsheet ID and range
+var spreadsheetId = "18MXAU4n_DX_GVNNmw7rQjjJC7IQ59C8LK2bZOAL9j4g";
+var range = "DATA!A2:AU";
+
+// Import data
+var importedData = SpreadsheetApp.openById(spreadsheetId).getSheetByName("DATA").getRange(range).getValues();
+
+// Filter data based on conditions
+var filteredData = importedData.filter(function(row) {
+return row[46] <= 4850 && row[9] === 'MALAYSIA'; // Adjust column indexes and conditions as needed
+});
+
+// Order filtered data by column 46 (adjust as needed)
+filteredData.sort(function(a, b) {
+return a[46] - b[46];
+});
+
+// Select only the desired columns
+var selectedColumns = filteredData.map(function(row) {
+return [row[6], row[5], row[4], row[17], row[15], row[16], row[46], row[34], row[35], row[36], row[8], row[3]];
+});
+
+// Destination spreadsheet and range
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheet = ss.getSheetByName("DATA");
+var destRange = sheet.getRange("D3"); // Adjust the starting cell as needed
+
+// Set the filtered and sorted data to the destination range
+var rangeData = destRange.offset(0, 0, selectedColumns.length, selectedColumns[0].length).setValues(selectedColumns);
+
+// Sort the range by the fourth column (index 3) in ascending order
+rangeData.sort({column: 3, ascending: true});
+
+// Delete any extra rows
+var lastRow = sheet.getRange(1, 1).getDataRegion().getLastRow();
+sheet.insertRowAfter(lastRow);
+var maxRows = sheet.getMaxRows();
+sheet.deleteRows(lastRow + 1, maxRows - lastRow);
+}
