@@ -1,0 +1,15 @@
+//SENARAI LINK SHEET OPTION 1
+function listSheetLinks() {
+var ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selectedRange = ss.getActiveRange();
+var columm = selectedRange.getColumn();
+var roww = selectedRange.getRow()
+var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+var links = sheets.map(function(sheet) {
+var gid = sheet.getSheetId();
+return ['=HYPERLINK("#gid=' + gid + '","' + sheet.getName() + '")'];
+});
+
+var outputRange = ss.getRange(roww, columm, links.length, 1);
+outputRange.setFormulas(links).setHorizontalAlignment("center");
+}
