@@ -1,0 +1,13 @@
+//IMPORT DATA ALL
+function linkProfil() {
+var sourceSpreadsheetId = "18MXAU4n_DX_GVNNmw7rQjjJC7IQ59C8LK2bZOAL9j4g";
+var sourceRange = "DONE!A2:B";
+
+var sourceData = SpreadsheetApp.openById(sourceSpreadsheetId).getSheetByName("DONE").getRange(sourceRange).getValues();
+var destinationSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("DONE");
+var destinationRange = destinationSheet.getRange("A2");
+
+destinationRange.clear(); // Clear existing data in the destination range
+destinationRange.offset(0, 0, sourceData.length, sourceData[0].length).setValues(sourceData);
+}
+
