@@ -1,0 +1,9 @@
+//SENARAI NAMA SHEET
+function sheetName() {
+var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets()
+var out = new Array( sheets.length+1 ) ;
+out[0] = [ "NAME" , "#GID" ];
+for (var i = 1 ; i < sheets.length+1 ; i++ ) out[i] =
+[sheets[i-1].getName() , sheets[i-1].getSheetId() ];
+return out
+}
