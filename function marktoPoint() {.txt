@@ -1,0 +1,51 @@
+function marktoPoint() {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var selectedRange = sheet.getActiveRange();
+    var selectedValues = selectedRange.getValues();
+    var selectedColumns = selectedRange.getWidth();
+    var selectedRows = selectedRange.getHeight();
+
+    var column = selectedRange.getColumn();
+    var row = selectedRange.getRow();
+
+    for (var i = 0; i < selectedRows; i++) {
+        for (var j = 0; j < selectedColumns; j++) {
+            var val = selectedValues[i][j];
+
+            if (val !== "") {
+                // point conversion logic
+                var point = '';
+               if (mark >= 0 && mark <= 29) {
+return 0;
+} else if (mark >= 30 && mark <= 34) {
+return 0.67;
+} else if (mark >= 35 && mark <= 39) {
+return 1.00;
+} else if (mark >= 40 && mark <= 44) {
+return 1.33;
+} else if (mark >= 45 && mark <= 49) {
+return 1.67;
+} else if (mark >= 50 && mark <= 54) {
+return 2.00;
+} else if (mark >= 55 && mark <= 59) {
+return 2.33;
+} else if (mark >= 60 && mark <= 64) {
+return 2.67;
+} else if (mark >= 65 && mark <= 69) {
+return 3.00;
+} else if (mark >= 70 && mark <= 74) {
+return 3.33;
+} else if (mark >= 75 && mark <= 79) {
+return 3.67;
+} else if (mark >= 80 && mark <= 100) {
+return 4.00;
+} else {
+// Handle invalid marks
+return 'Invalid mark';
+}
+}
+                sheet.getRange(row + i, column + j).setValue(point);
+            }
+        }
+    }
+}
