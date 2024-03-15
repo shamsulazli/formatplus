@@ -1,0 +1,18 @@
+//SET TEMPOH DARI TARIKH MULA DAN AKHIR
+function kiraTempoh() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var selection = sheet.getActiveRange();
+var numRows = selection.getNumRows();
+var column = selection.getColumn();
+var startColumn = column - 1;
+var endColumn = column - 2;
+
+for (var i = 1; i <= numRows; i++) {
+var row = selection.getRow() + i - 1; // Adjust row index for selected range
+var startDate = sheet.getRange(row, startColumn).getValue();
+var endDate = sheet.getRange(row, endColumn).getValue();
+
+if (startDate instanceof Date && endDate instanceof Date) {
+var period = tempoh(endDate, startDate);
+sheet.getRange(row, column).setValue(period);
+}}}
